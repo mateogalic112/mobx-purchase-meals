@@ -22,6 +22,10 @@
   padding-left: 0;
 }
 
+.meal-card .drink-list li {
+  cursor: pointer;
+}
+
 .meal-card .drink-list li .drink-image {
   width: 100px;
   height: 100px;
