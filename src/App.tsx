@@ -11,6 +11,7 @@ import { Passenger } from './models/Passenger'
 import PassengerCard from './components/PassengerCard'
 import filterMeals from './helpers/filterMeals'
 import './App.css'
+import { Drink } from './models/Drink'
 
 function App() {
   const [selectedLabel, setSelectedLabel] = useState(BASE_LABEL)
@@ -67,12 +68,19 @@ function App() {
                               ? selectedPassenger?.order?.drink
                               : null
                           }
-                          orderMeal={(meal, drink) =>
+                          orderMeal={(
+                            meal: Meal,
+                            drink: Drink | null | undefined,
+                          ) =>
                             store.createOrder(selectedPassenger, meal, drink)
                           }
                           removeMeal={() =>
                             store.removeOrder(selectedPassenger?.id)
                           }
+                          updateMeal={(drink: Drink | null | undefined) =>
+                            store.updateOrder(selectedPassenger?.id, drink)
+                          }
+                          passenger={selectedPassenger}
                         />
                       ),
                     )}

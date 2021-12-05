@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { Button, Card } from 'react-bootstrap'
+import displayMealButton from '../helpers/displayMealButton'
 import { Drink } from '../models/Drink'
 import { Meal } from '../models/Meal'
+import { Passenger } from '../models/Passenger'
 
 const MealCard = ({
   meal,
@@ -9,12 +11,16 @@ const MealCard = ({
   mealDrinkSelected,
   isMealSelected,
   removeMeal,
+  updateMeal,
+  passenger,
 }: {
   meal: Meal
   orderMeal: (meal: Meal, drink: Drink | null | undefined) => void
   removeMeal: () => void
+  updateMeal: (drink: Drink | null | undefined) => void
   mealDrinkSelected: Drink | null | undefined
   isMealSelected: boolean
+  passenger: Passenger | null
 }) => {
   const [selectedDrink, setSelectedDrink] = useState<Drink | null | undefined>(
     mealDrinkSelected,
@@ -40,7 +46,7 @@ const MealCard = ({
   return (
     <Card
       className="meal-card mb-4"
-      style={{ border: isMealSelected ? '1px solid red' : '' }}
+      style={{ border: isMealSelected ? '2px solid red' : '' }}
     >
       <Card.Img variant="top" src={meal.img} />
       <Card.Body>
@@ -59,6 +65,7 @@ const MealCard = ({
           {meal.drinks.length > 0 &&
             meal.drinks.map((drink) => (
               <li
+                key={drink.id}
                 style={{
                   border:
                     selectedDrink?.id === drink.id
@@ -78,17 +85,14 @@ const MealCard = ({
           Price:{' '}
           <b>{calculateMealPrice(selectedDrink, meal.price).toFixed(2)}€</b>
         </p>
-        {isMealSelected ? (
-          <Button variant="light" onClick={removeMeal}>
-            Unselect
-          </Button>
-        ) : (
-          <Button
-            variant="primary"
-            onClick={() => orderMeal(meal, selectedDrink)}
-          >
-            Select
-          </Button>
+        {displayMealButton(
+          meal,
+          isMealSelected,
+          passenger,
+          selectedDrink,
+          orderMeal,
+          removeMeal,
+          updateMeal,
         )}
       </Card.Body>
     </Card>

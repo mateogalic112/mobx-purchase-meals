@@ -70,6 +70,21 @@ class Store {
     })
   }
 
+  updateOrder(
+    passengerId: string | null | undefined,
+    selectedDrink: Drink | null | undefined,
+  ): void {
+    if (!passengerId) return
+
+    this.passengers.map((passenger: Passenger) => {
+      if (passenger.id === passengerId && passenger.order) {
+        passenger.order.drink = selectedDrink
+        return passenger
+      }
+      return passenger
+    })
+  }
+
   calculateTotalPrice(): number {
     return this.passengers.reduce((acc: number, passenger: Passenger) => {
       if (passenger?.order) {
