@@ -16,7 +16,7 @@ const FilterLabel = ({
       className="label-badge p-2 m-1"
       pill
       bg={selectedLabel.id === label.id ? 'info' : 'light'}
-      text="dark"
+      text={selectedLabel.id === label.id ? 'light' : 'dark'}
     >
       {label.label}
     </Badge>
