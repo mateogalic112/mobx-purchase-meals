@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Container, Row, Col, Accordion } from 'react-bootstrap'
 import FilterLabel from './components/FilterLabel'
 import MealCard from './components/MealCard'
@@ -12,12 +12,25 @@ import PassengerCard from './components/PassengerCard'
 import filterMeals from './helpers/filterMeals'
 import './App.css'
 import { Drink } from './models/Drink'
+import Paginate from './components/Pagination'
+
+const PER_PAGE: number = 3
 
 function App() {
   const [selectedLabel, setSelectedLabel] = useState(BASE_LABEL)
+
   const [selectedPassenger, setSelectedPassenger] = useState<Passenger | null>(
     () => (store.passengers.length > 0 ? store.passengers[0] : null),
   )
+
+  const totalMeals = filterMeals(selectedLabel, store.meals).length
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const totalPages: number = useMemo(() => Math.ceil(totalMeals / PER_PAGE), [
+    totalMeals,
+  ])
+  const changePage = (page: number) => {
+    setCurrentPage(page)
+  }
 
   useEffect(() => {
     store.onLoad(process.env.REACT_APP_BASE_URL as string)
@@ -25,10 +38,12 @@ function App() {
 
   const handleSelectLabel = (label: Label) => {
     setSelectedLabel(label)
+    setCurrentPage(1)
   }
 
   const handleSelectPassenger = (passenger: Passenger) => {
     setSelectedPassenger(passenger)
+    setCurrentPage(1)
   }
 
   if (store.isLoading) return <h1>Loading....</h1>
@@ -55,8 +70,12 @@ function App() {
                 </Row>
                 <Row>
                   <Col>
-                    {filterMeals(selectedLabel, store.meals).map(
-                      (meal: Meal) => (
+                    {filterMeals(selectedLabel, store.meals)
+                      .slice(
+                        (currentPage - 1) * PER_PAGE,
+                        PER_PAGE * currentPage,
+                      )
+                      .map((meal: Meal) => (
                         <MealCard
                           key={`${meal.id}-${selectedLabel.id}-${selectedPassenger?.id}`}
                           meal={meal}
@@ -82,7 +101,17 @@ function App() {
                           }
                           passenger={selectedPassenger}
                         />
-                      ),
+                      ))}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    {totalPages > 1 && (
+                      <Paginate
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        changePage={(page: number) => changePage(page)}
+                      />
                     )}
                   </Col>
                 </Row>
