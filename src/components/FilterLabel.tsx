@@ -13,11 +13,10 @@ const FilterLabel = ({
   return (
     <Badge
       onClick={() => handleClick(label)}
-      className="p-2 m-1"
+      className="label-badge p-2 m-1"
       pill
       bg={selectedLabel.id === label.id ? 'info' : 'light'}
       text="dark"
-      style={{ cursor: 'pointer' }}
     >
       {label.label}
     </Badge>

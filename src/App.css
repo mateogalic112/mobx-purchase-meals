@@ -1,38 +1,56 @@
-.App {
-  text-align: center;
+/* Labels */
+.label-badge {
+  cursor: pointer;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Meal card */
+.meal-card .description {
+  margin-bottom: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.meal-card img {
+  max-width: 100%;
+  height: 200px;
+  object-fit: cover;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.meal-card .drink-list {
   display: flex;
-  flex-direction: column;
+  gap: 10px;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+  padding-left: 0;
+}
+
+.meal-card .drink-list li .drink-image {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+/* Flight details */
+.price-container {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  gap: 20px;
+  justify-content: space-between;
 }
 
-.App-link {
-  color: #61dafb;
+.price-container h3 {
+  margin-bottom: 0;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Passenger card */
+.passenger-card {
+  align-items: center;
+  display: flex;
+  gap: 20px;
+  justify-content: space-around;
+  border: 1px solid black;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.passenger-card p {
+  margin-bottom: 0;
 }

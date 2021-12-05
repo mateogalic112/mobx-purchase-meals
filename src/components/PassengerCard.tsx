@@ -13,19 +13,12 @@ const PassengerCard = ({
     <div
       key={passenger.id}
       style={{
-        alignItems: 'center',
-        display: 'flex',
-        gap: '20px',
-        justifyContent: 'space-around',
-        border: '1px solid black',
-        cursor: 'pointer',
-        marginBottom: '1rem',
         opacity: selectedPassengerId === passenger.id ? '1' : '0.35',
       }}
       onClick={() => handleSelectPassenger(passenger)}
-      className="p-2"
+      className="passenger-card p-2"
     >
-      <p style={{ marginBottom: 0 }}>{passenger.type}</p>
+      <p>{passenger.type}</p>
       <span
         style={{
           color: selectedPassengerId !== passenger.id ? 'grey' : 'black',

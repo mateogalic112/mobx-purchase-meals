@@ -39,43 +39,23 @@ const MealCard = ({
 
   return (
     <Card
-      className="mb-4"
+      className="meal-card mb-4"
       style={{ border: isMealSelected ? '1px solid red' : '' }}
     >
-      <Card.Img
-        variant="top"
-        src={meal.img}
-        style={{
-          maxWidth: '100%',
-          height: '200px',
-          objectFit: 'cover',
-        }}
-      />
+      <Card.Img variant="top" src={meal.img} />
       <Card.Body>
         <Card.Title>
           {meal.title}
           {selectedDrink ? ' + drink' : ''}
         </Card.Title>
         {meal.starter && (
-          <p style={{ marginBottom: '0' }}> Starter: {meal.starter}</p>
+          <p className="description"> Starter: {meal.starter}</p>
         )}
-        {meal.desert && (
-          <p style={{ marginBottom: '0' }}> Desert: {meal.desert}</p>
-        )}
+        {meal.desert && <p className="description"> Desert: {meal.desert}</p>}
         {selectedDrink && (
-          <p style={{ marginBottom: '0' }}>
-            {' '}
-            Selected drink: {selectedDrink.title}
-          </p>
+          <p className="description">Selected drink: {selectedDrink.title}</p>
         )}
-        <ul
-          style={{
-            display: 'flex',
-            gap: '10px',
-            marginTop: '1rem',
-            flexWrap: 'wrap',
-          }}
-        >
+        <ul className="drink-list">
           {meal.drinks.length > 0 &&
             meal.drinks.map((drink) => (
               <li
@@ -84,17 +64,12 @@ const MealCard = ({
                     selectedDrink?.id === drink.id
                       ? '1px solid red'
                       : '1px solid grey',
-                  listStyle: 'none',
                 }}
                 onClick={() => handleClick(drink)}
               >
                 <img
                   src={`drinks/${drink.title.toLowerCase()}.jpeg`}
-                  style={{
-                    width: '100px',
-                    height: '100px',
-                    objectFit: 'contain',
-                  }}
+                  className="drink-image"
                 />
               </li>
             ))}

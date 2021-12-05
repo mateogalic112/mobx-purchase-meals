@@ -9,14 +9,8 @@ import store, { BASE_LABEL } from './mobx/store'
 import { observer } from 'mobx-react-lite'
 import { Passenger } from './models/Passenger'
 import PassengerCard from './components/PassengerCard'
-
-const filterMeals = (label: Label, meals: Meal[]): Meal[] => {
-  if (!meals) return []
-
-  if (label.label === 'All') return meals
-
-  return meals.filter((meal) => meal.labels.includes(label.id))
-}
+import filterMeals from './helpers/filterMeals'
+import './App.css'
 
 function App() {
   const [selectedLabel, setSelectedLabel] = useState(BASE_LABEL)
@@ -28,7 +22,7 @@ function App() {
     store.onLoad(process.env.REACT_APP_BASE_URL as string)
   }, [])
 
-  const handleClick = (label: Label) => {
+  const handleSelectLabel = (label: Label) => {
     setSelectedLabel(label)
   }
 
@@ -53,33 +47,35 @@ function App() {
                           key={label.id}
                           label={label}
                           selectedLabel={selectedLabel}
-                          handleClick={handleClick}
+                          handleClick={handleSelectLabel}
                         />
                       ))}
                   </Col>
                 </Row>
                 <Row>
                   <Col>
-                    {filterMeals(selectedLabel, store.meals).map((meal) => (
-                      <MealCard
-                        key={`${meal.id}-${selectedLabel.id}-${selectedPassenger?.id}`}
-                        meal={meal}
-                        isMealSelected={
-                          selectedPassenger?.order?.meal.id === meal.id
-                        }
-                        mealDrinkSelected={
-                          selectedPassenger?.order?.meal.id === meal.id
-                            ? selectedPassenger?.order?.drink
-                            : null
-                        }
-                        orderMeal={(meal, drink) =>
-                          store.createOrder(selectedPassenger, meal, drink)
-                        }
-                        removeMeal={() =>
-                          store.removeOrder(selectedPassenger?.id)
-                        }
-                      />
-                    ))}
+                    {filterMeals(selectedLabel, store.meals).map(
+                      (meal: Meal) => (
+                        <MealCard
+                          key={`${meal.id}-${selectedLabel.id}-${selectedPassenger?.id}`}
+                          meal={meal}
+                          isMealSelected={
+                            selectedPassenger?.order?.meal.id === meal.id
+                          }
+                          mealDrinkSelected={
+                            selectedPassenger?.order?.meal.id === meal.id
+                              ? selectedPassenger?.order?.drink
+                              : null
+                          }
+                          orderMeal={(meal, drink) =>
+                            store.createOrder(selectedPassenger, meal, drink)
+                          }
+                          removeMeal={() =>
+                            store.removeOrder(selectedPassenger?.id)
+                          }
+                        />
+                      ),
+                    )}
                   </Col>
                 </Row>
               </Container>
@@ -108,18 +104,9 @@ function App() {
                 </Accordion.Body>
               </Accordion.Item>
             </Accordion>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '20px',
-                justifyContent: 'space-between',
-              }}
-            >
+            <div className="price-container">
               <p className="mt-4">Total for all passengers:</p>
-              <h3 style={{ margin: '0' }}>
-                {store.calculateTotalPrice().toFixed(2)}€
-              </h3>
+              <h3>{store.calculateTotalPrice().toFixed(2)}€</h3>
             </div>
           </Col>
         </Row>
